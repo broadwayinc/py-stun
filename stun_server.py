@@ -1,10 +1,11 @@
 """
-Simple stun server, udp and tcp combined server on port 3560
+Simple stun server, udp and tcp combined server. (default port=3560)
 
 Host on remote instance forwarded by udp request load balancer infront.
 tcp is only for health check running parallel with udp server.
 """
 
+import argparse
 import socket
 import struct
 import threading
@@ -131,4 +132,8 @@ def start_combined_server(host="0.0.0.0", port=3560):
 
 
 if __name__ == "__main__":
-    start_combined_server()
+    parser = argparse.ArgumentParser(description="Start a combined STUN and health check server.")
+    parser.add_argument("--port", type=int, default=3560, help="Port number to listen on")
+    args = parser.parse_args()
+
+    start_combined_server(port=args.port)
